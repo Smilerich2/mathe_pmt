@@ -44,7 +44,7 @@ export default function Uebung() {
     const fromUnit = units[fromUnitIndex]
     const toUnit = units[toUnitIndex]
 
-    let fromValue: number
+    let fromValue = 1 // Default value to ensure it's always initialized
     const stepDifference = Math.abs(toUnitIndex - fromUnitIndex)
 
     // 70% chance for easy/medium exercises, 30% for challenging ones
@@ -170,74 +170,86 @@ export default function Uebung() {
 
   const getScoreColor = () => {
     const percentage = (score.correct / score.total) * 100
-    if (percentage >= 80) return 'text-green-600'
-    if (percentage >= 60) return 'text-yellow-600'
-    return 'text-red-600'
+    if (percentage >= 80) return 'text-green-700'
+    if (percentage >= 60) return 'text-yellow-700'
+    return 'text-red-700'
   }
 
   const getScoreMessage = () => {
     const percentage = (score.correct / score.total) * 100
-    if (percentage >= 90) return 'Ausgezeichnet! 🏆'
-    if (percentage >= 80) return 'Sehr gut! 🌟'
-    if (percentage >= 70) return 'Gut gemacht! 👍'
-    if (percentage >= 60) return 'Nicht schlecht! 📈'
-    return 'Übe weiter! 💪'
+    if (percentage >= 90) return 'Ausgezeichnet!'
+    if (percentage >= 80) return 'Sehr gut!'
+    if (percentage >= 70) return 'Gut gemacht!'
+    if (percentage >= 60) return 'Nicht schlecht!'
+    return 'Übe weiter!'
   }
 
   if (exercises.length === 0) {
-    return <div>Lade Übungen...</div>
+    return <div>Lade Längenübungen...</div>
   }
 
   if (gameFinished) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="min-h-screen bg-gray-100">
+        {/* Navigation */}
+        <nav className="bg-white border-b border-gray-300">
+          <div className="container mx-auto px-4">
+            <div className="flex justify-between items-center py-4">
+              <Link href="/" className="text-xl font-bold text-gray-800">
+                Einheiten-Umrechner
+              </Link>
+              <Link href="/" className="text-gray-700 hover:text-gray-900 font-medium">
+                ← Startseite
+              </Link>
+            </div>
+          </div>
+        </nav>
+
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-              <h1 className="text-3xl font-bold text-gray-800 mb-6">Übung abgeschlossen!</h1>
+            <div className="bg-white border border-gray-300 rounded-lg p-8">
+              <div className="text-center">
+                <h1 className="text-3xl font-bold text-gray-900 mb-6">Längenübung abgeschlossen</h1>
 
-              <div className="text-6xl mb-6">
-                {score.correct === score.total ? '🏆' : score.correct >= score.total * 0.8 ? '🌟' : '👍'}
-              </div>
-
-              <div className={`text-4xl font-bold mb-4 ${getScoreColor()}`}>
-                {score.correct} / {score.total}
-              </div>
-
-              <div className="text-xl text-gray-600 mb-6">
-                {getScoreMessage()}
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                <h3 className="text-lg font-semibold mb-4">Deine Antworten:</h3>
-                <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {exercises.map((ex, index) => (
-                    <div key={ex.id} className="flex justify-between items-center p-2 rounded bg-white">
-                      <span className="text-sm">{index + 1}. {ex.from} {ex.fromUnit} → {ex.toUnit}</span>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm">{ex.userAnswer}</span>
-                        <span className={`text-lg ${ex.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                          {ex.isCorrect ? '✓' : '✗'}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                <div className={`text-4xl font-bold mb-4 ${getScoreColor()}`}>
+                  {score.correct} / {score.total}
                 </div>
-              </div>
 
-              <div className="space-x-4">
-                <button
-                  onClick={startNewGame}
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
-                >
-                  Neue Übung starten
-                </button>
-                <Link
-                  href="/"
-                  className="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors"
-                >
-                  Zur Startseite
-                </Link>
+                <div className="text-xl text-gray-700 mb-6">
+                  {getScoreMessage()}
+                </div>
+
+                <div className="bg-gray-50 border border-gray-200 rounded p-6 mb-6">
+                  <h3 className="text-lg font-bold mb-4">Übersicht der Antworten</h3>
+                  <div className="space-y-2 max-h-60 overflow-y-auto text-left">
+                    {exercises.map((ex, index) => (
+                      <div key={ex.id} className="flex justify-between items-center p-2 border-b border-gray-100">
+                        <span className="text-sm">{index + 1}. {ex.from} {ex.fromUnit} → {ex.toUnit}</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm font-mono">{ex.userAnswer}</span>
+                          <span className={`text-lg ${ex.isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                            {ex.isCorrect ? '✓' : '✗'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-x-4">
+                  <button
+                    onClick={startNewGame}
+                    className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded font-medium transition-colors"
+                  >
+                    Neue Übung starten
+                  </button>
+                  <Link
+                    href="/"
+                    className="inline-block border border-gray-300 hover:border-gray-400 bg-gray-50 hover:bg-gray-100 px-6 py-3 rounded font-medium transition-colors"
+                  >
+                    Zur Startseite
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -249,36 +261,48 @@ export default function Uebung() {
   const currentEx = exercises[currentExercise]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gray-100">
+      {/* Navigation */}
+      <nav className="bg-white border-b border-gray-300">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center py-4">
+            <Link href="/" className="text-xl font-bold text-gray-800">
+              Einheiten-Umrechner
+            </Link>
+            <Link href="/" className="text-gray-700 hover:text-gray-900 font-medium">
+              ← Startseite
+            </Link>
+          </div>
+        </div>
+      </nav>
+
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Einheiten-Übung</h1>
-            <div className="text-lg text-gray-600">
-              Aufgabe {currentExercise + 1} von {exercises.length}
-            </div>
-            <div className="text-sm text-gray-500 mt-2">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Längeneinheiten - Übungen</h1>
+            <div className="text-gray-600">
+              Aufgabe {currentExercise + 1} von {exercises.length} |
               Richtig: {score.correct} | Falsch: {score.total - score.correct}
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-lg p-8">
+          <div className="bg-white border border-gray-300 rounded-lg p-8">
             <div className="mb-6">
-              <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+              <div className="w-full bg-gray-200 rounded h-2 mb-4">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-gray-800 h-2 rounded transition-all duration-300"
                   style={{ width: `${((currentExercise + 1) / exercises.length) * 100}%` }}
                 ></div>
               </div>
             </div>
 
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 {currentEx.question}
               </h2>
 
-              <div className="bg-blue-50 rounded-lg p-6 mb-6">
-                <div className="text-3xl font-bold text-blue-600 mb-2">
+              <div className="bg-gray-50 border border-gray-200 rounded p-6 mb-6">
+                <div className="text-3xl font-bold text-gray-800 mb-2 font-mono">
                   {currentEx.from} {currentEx.fromUnit}
                 </div>
                 <div className="text-xl text-gray-600">
@@ -292,44 +316,44 @@ export default function Uebung() {
                     type="number"
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
-                    className="w-full max-w-xs mx-auto px-4 py-3 text-center text-xl border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                    placeholder="Deine Antwort"
+                    className="w-full max-w-xs mx-auto px-4 py-3 text-center text-xl border-2 border-gray-300 rounded focus:border-gray-500 focus:outline-none font-mono"
+                    placeholder="Antwort eingeben"
                     onKeyPress={(e) => e.key === 'Enter' && submitAnswer()}
                   />
                   <div>
                     <button
                       onClick={submitAnswer}
                       disabled={!userAnswer.trim()}
-                      className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                      className="bg-gray-800 hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-8 py-3 rounded font-medium transition-colors"
                     >
-                      Antwort prüfen
+                      Prüfen
                     </button>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className={`text-xl font-bold ${currentEx.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                    {currentEx.isCorrect ? '✅ Richtig!' : '❌ Falsch!'}
+                  <div className={`text-xl font-bold ${currentEx.isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                    {currentEx.isCorrect ? 'Richtig!' : 'Falsch!'}
                   </div>
 
-                  <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="bg-gray-50 border border-gray-200 rounded p-4">
                     <div className="text-lg">
                       <span className="text-gray-600">Deine Antwort: </span>
-                      <span className={currentEx.isCorrect ? 'text-green-600 font-bold' : 'text-red-600'}>
+                      <span className={`font-mono ${currentEx.isCorrect ? 'text-green-700 font-bold' : 'text-red-700'}`}>
                         {userAnswer}
                       </span>
                     </div>
                     {!currentEx.isCorrect && (
                       <div className="text-lg mt-2">
                         <span className="text-gray-600">Richtige Antwort: </span>
-                        <span className="text-green-600 font-bold">{currentEx.correctAnswer}</span>
+                        <span className="text-green-700 font-bold font-mono">{currentEx.correctAnswer}</span>
                       </div>
                     )}
                   </div>
 
                   <button
                     onClick={nextExercise}
-                    className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                    className="bg-gray-800 hover:bg-gray-900 text-white px-8 py-3 rounded font-medium transition-colors"
                   >
                     {currentExercise < exercises.length - 1 ? 'Nächste Aufgabe' : 'Ergebnis anzeigen'}
                   </button>
@@ -338,18 +362,18 @@ export default function Uebung() {
             </div>
           </div>
 
-          <div className="text-center mt-6">
+          <div className="text-center mt-6 space-x-4">
             <Link
               href="/erklaerung"
-              className="text-blue-600 hover:text-blue-800 underline mr-4"
+              className="text-gray-700 hover:text-gray-900 underline"
             >
-              💡 Hilfe anzeigen
+              Theorie wiederholen
             </Link>
             <Link
               href="/"
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="text-gray-700 hover:text-gray-900 underline"
             >
-              ← Zur Startseite
+              Zur Startseite
             </Link>
           </div>
         </div>

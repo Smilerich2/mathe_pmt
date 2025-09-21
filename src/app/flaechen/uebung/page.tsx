@@ -43,7 +43,7 @@ export default function FlaechenUebung() {
     const fromUnit = areaUnits[fromUnitIndex]
     const toUnit = areaUnits[toUnitIndex]
 
-    let fromValue: number
+    let fromValue = 1 // Default value to ensure it's always initialized
     const stepDifference = Math.abs(toUnitIndex - fromUnitIndex)
 
     // 70% chance for easy/medium exercises, 30% for challenging ones
